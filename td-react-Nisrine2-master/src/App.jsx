@@ -40,6 +40,8 @@ function MainContent() {
 
 // Composant Footer
 function Footer() {
+    const annee = new Date().getFullYear(); // Récupérer l'année actuelle
+
     return (
         <footer style={{
             textAlign: 'center',
@@ -54,10 +56,11 @@ function Footer() {
             color: '#000', // Couleur du texte en noir
             boxSizing: 'border-box'
         }}>
-            <p>© Tous droits réservés - Nisrine Samrani</p>
+            <p>© {annee} - Nisrine Samrani, Tous droits réservés.</p>
         </footer>
     );
 }
+
 
 
 
