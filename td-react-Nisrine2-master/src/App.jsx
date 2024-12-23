@@ -24,6 +24,29 @@ function MainContent() {
     );
 }
 
+// Composant Footer
+function Footer() {
+    return (
+        <footer style={{
+            textAlign: 'center',
+            position: 'fixed',
+            bottom: '0',
+            left: '0',
+            right: '0',
+            width: '100%',
+            padding: '10px',
+            backgroundColor: '#f1f1f1',
+            borderTop: '1px solid #ddd',
+            color: '#000', // Couleur du texte en noir
+            boxSizing: 'border-box'
+        }}>
+            <p>© Tous droits réservés - Nisrine Samrani</p>
+        </footer>
+    );
+}
+
+
+
 // Composant App
 function App() {
     const [count, setCount] = useState(0);
@@ -52,6 +75,7 @@ function App() {
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more
             </p>
+            <Footer />
         </>
     );
 }
