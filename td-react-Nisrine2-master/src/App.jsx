@@ -15,6 +15,15 @@ function Header() {
     );
 }
 
+// Composant MainContent
+function MainContent() {
+    return (
+        <main style={{ textAlign: 'center', marginTop: '20px' }}>
+            <p>Ici, nous afficherons des informations intéressantes :)</p>
+        </main>
+    );
+}
+
 // Composant App
 function App() {
     const [count, setCount] = useState(0);
@@ -22,6 +31,7 @@ function App() {
     return (
         <>
             <Header />
+            <MainContent />
             <div>
                 <a href="https://vite.dev" target="_blank">
                     <img src={viteLogo} className="logo" alt="Vite logo" />
