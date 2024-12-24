@@ -6,11 +6,15 @@ import './App.css';
 import data from '../data.json';
 
 // Composant Header
-function Header() {
+function Header({ selectedItem }) {
     return (
-        <header style={{textAlign: 'center', padding: '20px'}}>
-            <img src={logo} alt="Logo formation" style={{height: '120px', marginTop: '20px'}}/>
-
+        <header style={{ textAlign: 'center', padding: '20px' }}>
+            {selectedItem && (
+                <p style={{ fontSize: '18px', color: '#ffffff', marginBottom: '10px' }}>
+                    Vous avez sélectionné : {selectedItem}
+                </p>
+            )}
+            <img src={logo} alt="Logo formation" style={{ height: '120px', marginTop: '20px' }} />
             <h1>Introduction à React</h1>
             <h2>A la découverte des premières notions de React</h2>
         </header>
@@ -45,21 +49,31 @@ function MainContent() {
 
     return (
         <main style={{ textAlign: 'center', marginTop: '20px' }}>
-            {/* Affichage de la date et de l'heure */}
             <p>
                 Bonjour, on est le {jour}, {moisNom}, {annee} et il est {heure}:{minute}:{seconde}
             </p>
-
-            {/* Bouton pour tirer un élément aléatoire */}
             <button onClick={handleRandomClick} style={{ marginTop: '20px' }}>
                 Afficher un élément aléatoire
             </button>
-
-            {/* Affichage de l'élément aléatoire */}
             {randomItem && (
-                <p style={{ marginTop: '20px' }}>
-                    Élément sélectionné : {randomItem.text}
-                </p>
+                <div className="details" style={{ marginTop: '20px' }}>
+                    <h2>Détails de la Note</h2>
+                    <p>
+                        <strong>Course:</strong> {randomItem.course}
+                    </p>
+                    <p>
+                        <strong>Étudiant:</strong> {randomItem.student.firstname} {randomItem.student.lastname}
+                    </p>
+                    <p>
+                        <strong>ID:</strong> {randomItem.student.id}
+                    </p>
+                    <p>
+                        <strong>Date:</strong> {randomItem.date}
+                    </p>
+                    <p>
+                        <strong>Note:</strong> {randomItem.grade}
+                    </p>
+                </div>
             )}
         </main>
     );
@@ -67,7 +81,7 @@ function MainContent() {
 
 // Composant Footer
 function Footer() {
-    const annee = new Date().getFullYear(); // Récupérer l'année actuelle
+    const annee = new Date().getFullYear();
 
     return (
         <footer style={{
@@ -80,7 +94,7 @@ function Footer() {
             padding: '10px',
             backgroundColor: '#f1f1f1',
             borderTop: '1px solid #ddd',
-            color: '#000', // Couleur du texte en noir
+            color: '#000',
             boxSizing: 'border-box'
         }}>
             <p>© {annee} - Nisrine Samrani, Tous droits réservés.</p>
@@ -89,17 +103,23 @@ function Footer() {
 }
 
 // Composant Menu
-function Menu() {
-    const handleClick = (item) => {
-        alert(`Vous avez cliqué sur: ${item}`);
-    };
-
+function Menu({ items, onItemClick, activeItem }) {
     return (
         <nav style={{ position: 'absolute', top: '10px', left: '10px' }}>
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
-                {['Notes', 'Etudiants', 'Matières', 'A propos'].map((item) => (
-                    <li key={item} style={{ margin: '10px 0' }}>
-                        <button onClick={() => handleClick(item)}>{item}</button>
+            <ul style={{ listStyleType: 'none', padding: 0, display: 'flex', gap: '10px' }}>
+                {items.map((item) => (
+                    <li key={item} style={{ margin: '0' }}>
+                        <button
+                            onClick={() => onItemClick(item)}
+                            style={{
+                                backgroundColor: activeItem === item ? '#d240d8' : '#fff',
+                                border: '1px solid #ccc',
+                                padding: '10px 20px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {item}
+                        </button>
                     </li>
                 ))}
             </ul>
@@ -109,33 +129,18 @@ function Menu() {
 
 // Composant App
 function App() {
-    const [count, setCount] = useState(0);
+    const [activeItem, setActiveItem] = useState('Notes');
+    const menuItems = ['Notes', 'Etudiants', 'Matières', 'A propos'];
+
+    const handleMenuItemClick = (item) => {
+        setActiveItem(item);
+    };
 
     return (
         <>
-            <Header />
-            <Menu />
+            <Header selectedItem={activeItem} />
+            <Menu items={menuItems} onItemClick={handleMenuItemClick} activeItem={activeItem} />
             <MainContent />
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
             <Footer />
         </>
     );
