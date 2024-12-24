@@ -1,149 +1,255 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
+import formationlogo from '../public/logo.png';
 import viteLogo from '/vite.svg';
-import logo from '../public/logo.png';
-import './App.css';
 import data from '../data.json';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from '@mui/material';
 
-// Composant Header
-function Header({ selectedItem }) {
-    return (
-        <header style={{ textAlign: 'center', padding: '20px' }}>
-            {selectedItem && (
-                <p style={{ fontSize: '18px', color: '#ffffff', marginBottom: '10px' }}>
-                    Vous avez sélectionné : {selectedItem}
-                </p>
-            )}
-            <img src={logo} alt="Logo formation" style={{ height: '120px', marginTop: '20px' }} />
-            <h1>Introduction à React</h1>
-            <h2>A la découverte des premières notions de React</h2>
-        </header>
-    );
-}
+// Styles CSS intégrés
+const styles = {
+    body: {
+        margin: 0,
+        fontFamily: 'Arial, sans-serif',
+        lineHeight: 1.6,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    },
+    container: {
+        flex: 1,
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '20px',
+        paddingBottom: '60px', // Ajoute de l'espace pour le footer
+    },
+    menu: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px',
+        backgroundColor: 'rgb(255,255,255)',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        zIndex: 1000,
+    },
+    menuList: {
+        display: 'flex',
+        listStyle: 'none',
+        margin: 0,
+        padding: 0,
+    },
+    menuItem: {
+        cursor: 'pointer',
+        padding: '5px 15px',
+        fontSize: '14px',
+        borderRadius: '5px',
+        backgroundColor: '#286398',
+        color: 'white',
+        fontWeight: 'bold',
+        transition: 'background-color 0.3s ease',
+        marginRight: '10px', // Ajoute de l'espace après chaque élément de menu
+    },
+    menuItemHover: {
+        backgroundColor: '#286398',
+    },
+    menuItemActive: {
+        backgroundColor: '#a5c9d1',
+    },
+    logo: {
+        height: '40px',
+    },
+    header: {
+        marginTop: '70px',
+        textAlign: 'center',
+    },
+    main: {
+        paddingTop: '80px',
+    },
+    footer: {
+        textAlign: 'center',
+        padding: '10px',
+        backgroundColor: '#f0f0f0',
+        color: '#333',
+        boxShadow: '0 -2px 5px rgba(0, 0, 0, 0.1)',
+        width: '100%',
+        position: 'fixed', // Fixe le footer en bas de la fenêtre
+        bottom: 0, // Place le footer au bas
+        left: 0, // Assure qu'il commence à gauche
+        zIndex: 1000, // Gère la superposition
+    },
+    table: {
+        minWidth: 650,
+        borderCollapse: 'collapse',
+    },
+    tableHeader: {
+        backgroundColor: '#a5c9d1',
+        color: '#fff',
+    },
+    tableCell: {
+        fontWeight: 'bold',
+        color: '#d240d8',
+        textAlign: 'center',
+        border: '1px solid #ccc',
+    },
+    tableRow: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: '#a5c9d1',
+        },
+        '&:hover': {
+            backgroundColor: '#a5c9d1',
+            cursor: 'pointer',
+        },
+    },
+    tableCellBody: {
+        textAlign: 'center',
+        padding: '10px',
+        border: '1px solid #ccc',
+        backgroundColor:'#57888c'
+    },
+};
 
-// Fonction pour tirer un élément aléatoire
-function getRandomItem(items) {
-    const randomIndex = Math.floor(Math.random() * items.length);
-    return items[randomIndex];
-}
+// Composants individuels
+const Notes = () => (
+    <TableContainer component={Paper}>
+        <Table style={styles.table}>
+            <TableHead style={styles.tableHeader}>
+                <TableRow>
+                    <TableCell style={styles.tableCell}>
+                        <TableSortLabel active={true} direction="asc">ID</TableSortLabel>
+                    </TableCell>
+                    <TableCell style={styles.tableCell}>Course</TableCell>
+                    <TableCell style={styles.tableCell}>Grade</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((item) => (
+                    <TableRow key={item.unique_id} style={styles.tableRow}>
+                        <TableCell style={styles.tableCellBody}>{item.unique_id}</TableCell>
+                        <TableCell style={styles.tableCellBody}>{item.course}</TableCell>
+                        <TableCell style={styles.tableCellBody}>{item.grade}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+);
 
-// Composant MainContent
-function MainContent() {
-    const now = new Date();
-    const jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-    const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+const Etudiants = () => (
+    <TableContainer component={Paper}>
+        <Table style={styles.table}>
+            <TableHead style={styles.tableHeader}>
+                <TableRow>
+                    <TableCell style={styles.tableCell}>ID</TableCell>
+                    <TableCell style={styles.tableCell}>First Name</TableCell>
+                    <TableCell style={styles.tableCell}>Last Name</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((item) => (
+                    <TableRow key={item.student.id} style={styles.tableRow}>
+                        <TableCell style={styles.tableCellBody}>{item.student.id}</TableCell>
+                        <TableCell style={styles.tableCellBody}>{item.student.firstname}</TableCell>
+                        <TableCell style={styles.tableCellBody}>{item.student.lastname}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+);
 
-    const jour = jours[now.getDay()];
-    const moisNom = mois[now.getMonth()];
-    const annee = now.getFullYear();
-    const heure = now.getHours().toString().padStart(2, '0');
-    const minute = now.getMinutes().toString().padStart(2, '0');
-    const seconde = now.getSeconds().toString().padStart(2, '0');
+const Matieres = () => (
+    <TableContainer component={Paper}>
+        <Table style={styles.table}>
+            <TableHead style={styles.tableHeader}>
+                <TableRow>
+                    <TableCell style={styles.tableCell}>Course</TableCell>
+                    <TableCell style={styles.tableCell}>Date</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((item) => (
+                    <TableRow key={item.unique_id} style={styles.tableRow}>
+                        <TableCell style={styles.tableCellBody}>{item.course}</TableCell>
+                        <TableCell style={styles.tableCellBody}>{item.date}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+);
 
-    const [randomItem, setRandomItem] = useState(null);
-
-    const handleRandomClick = () => {
-        const item = getRandomItem(data);
-        setRandomItem(item);
-    };
-
-    return (
-        <main style={{ textAlign: 'center', marginTop: '20px' }}>
-            <p>
-                Bonjour, on est le {jour}, {moisNom}, {annee} et il est {heure}:{minute}:{seconde}
-            </p>
-            <button onClick={handleRandomClick} style={{ marginTop: '20px' }}>
-                Afficher un élément aléatoire
-            </button>
-            {randomItem && (
-                <div className="details" style={{ marginTop: '20px' }}>
-                    <h2>Détails de la Note</h2>
-                    <p>
-                        <strong>Course:</strong> {randomItem.course}
-                    </p>
-                    <p>
-                        <strong>Étudiant:</strong> {randomItem.student.firstname} {randomItem.student.lastname}
-                    </p>
-                    <p>
-                        <strong>ID:</strong> {randomItem.student.id}
-                    </p>
-                    <p>
-                        <strong>Date:</strong> {randomItem.date}
-                    </p>
-                    <p>
-                        <strong>Note:</strong> {randomItem.grade}
-                    </p>
-                </div>
-            )}
-        </main>
-    );
-}
-
-// Composant Footer
-function Footer() {
-    const annee = new Date().getFullYear();
-
-    return (
-        <footer style={{
-            textAlign: 'center',
-            position: 'fixed',
-            bottom: '0',
-            left: '0',
-            right: '0',
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#f1f1f1',
-            borderTop: '1px solid #ddd',
-            color: '#000',
-            boxSizing: 'border-box'
-        }}>
-            <p>© {annee} - Nisrine Samrani, Tous droits réservés.</p>
-        </footer>
-    );
-}
+const APropos = () => (
+    <div>
+        <h2>À propos</h2>
+        <p>Ce projet est une démonstration des capacités de React et Material UI pour créer des interfaces utilisateur dynamiques et interactives.</p>
+    </div>
+);
 
 // Composant Menu
-function Menu({ items, onItemClick, activeItem }) {
+const Menu = ({ menuItems, onMenuClick, activeItem }) => (
+    <nav style={styles.menu}>
+        <ul style={styles.menuList}>
+            {menuItems.map((item) => (
+                <li
+                    key={item.name}
+                    style={{
+                        ...styles.menuItem,
+                        ...(activeItem === item.name ? styles.menuItemActive : {}),
+                    }}
+                    onClick={() => onMenuClick(item.name)}
+                >
+                    {item.label}
+                </li>
+            ))}
+        </ul>
+        <div>
+            <img src={formationlogo} alt="Formation logo" style={styles.logo} />
+        </div>
+    </nav>
+);
+
+// Composant Header
+const Header = () => (
+    <header style={styles.header}>
+        <h1>Univercité Cote d'Azur</h1>
+        <h2>Bienvenu sur votre espace !</h2>
+    </header>
+);
+
+// Composant Footer
+const Footer = () => {
+    const year = new Date().getFullYear();
     return (
-        <nav style={{ position: 'absolute', top: '10px', left: '10px' }}>
-            <ul style={{ listStyleType: 'none', padding: 0, display: 'flex', gap: '10px' }}>
-                {items.map((item) => (
-                    <li key={item} style={{ margin: '0' }}>
-                        <button
-                            onClick={() => onItemClick(item)}
-                            style={{
-                                backgroundColor: activeItem === item ? '#d240d8' : '#fff',
-                                border: '1px solid #ccc',
-                                padding: '10px 20px',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            {item}
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </nav>
+        <footer style={styles.footer}>
+            <h3>© {year} - Nisrine Samrani, Tous droits réservés.</h3>
+        </footer>
     );
-}
+};
 
-// Composant App
-function App() {
-    const [activeItem, setActiveItem] = useState('Notes');
-    const menuItems = ['Notes', 'Etudiants', 'Matières', 'A propos'];
+// Composant principal
+const Appli = () => {
+    const [activeMenu, setActiveMenu] = useState('Notes');
 
-    const handleMenuItemClick = (item) => {
-        setActiveItem(item);
-    };
+    const menuItems = [
+        { name: 'Notes', label: 'Notes', component: <Notes /> },
+        { name: 'Etudiants', label: 'Étudiants', component: <Etudiants /> },
+        { name: 'Matieres', label: 'Matières', component: <Matieres /> },
+        { name: 'APropos', label: 'À propos', component: <APropos /> },
+    ];
+
+    const activeComponent = menuItems.find((item) => item.name === activeMenu)?.component;
 
     return (
-        <>
-            <Header selectedItem={activeItem} />
-            <Menu items={menuItems} onItemClick={handleMenuItemClick} activeItem={activeItem} />
-            <MainContent />
+        <div style={styles.container}>
+            <Header />
+            <Menu menuItems={menuItems} onMenuClick={setActiveMenu} activeItem={activeMenu} />
+            <main style={styles.main}>{activeComponent}</main>
             <Footer />
-        </>
+        </div>
     );
-}
+};
 
-export default App;
+export default Appli;
