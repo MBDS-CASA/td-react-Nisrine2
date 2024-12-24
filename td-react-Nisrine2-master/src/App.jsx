@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import logo from '../public/logo.png';
 import './App.css';
+import data from '../data.json';
 
 // Composant Header
 function Header() {
@@ -13,6 +14,12 @@ function Header() {
             <h2>A la découverte des premières notions de React</h2>
         </header>
     );
+}
+
+// Fonction pour tirer un élément aléatoire
+function getRandomItem(items) {
+    const randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
 }
 
 // Composant MainContent
@@ -28,15 +35,34 @@ function MainContent() {
     const minute = now.getMinutes().toString().padStart(2, '0');
     const seconde = now.getSeconds().toString().padStart(2, '0');
 
+    const [randomItem, setRandomItem] = useState(null);
+
+    const handleRandomClick = () => {
+        const item = getRandomItem(data);
+        setRandomItem(item);
+    };
+
     return (
         <main style={{ textAlign: 'center', marginTop: '20px' }}>
+            {/* Affichage de la date et de l'heure */}
             <p>
                 Bonjour, on est le {jour}, {moisNom}, {annee} et il est {heure}:{minute}:{seconde}
             </p>
+
+            {/* Bouton pour tirer un élément aléatoire */}
+            <button onClick={handleRandomClick} style={{ marginTop: '20px' }}>
+                Afficher un élément aléatoire
+            </button>
+
+            {/* Affichage de l'élément aléatoire */}
+            {randomItem && (
+                <p style={{ marginTop: '20px' }}>
+                    Élément sélectionné : {randomItem.text}
+                </p>
+            )}
         </main>
     );
 }
-
 
 // Composant Footer
 function Footer() {
@@ -60,9 +86,6 @@ function Footer() {
         </footer>
     );
 }
-
-
-
 
 // Composant App
 function App() {
