@@ -8,8 +8,9 @@ import data from '../data.json';
 // Composant Header
 function Header() {
     return (
-        <header style={{ textAlign: 'center', padding: '20px' }}>
-            <img src={logo} alt="Logo formation" style={{ height: '120px' }} />
+        <header style={{textAlign: 'center', padding: '20px'}}>
+            <img src={logo} alt="Logo formation" style={{height: '120px', marginTop: '20px'}}/>
+
             <h1>Introduction à React</h1>
             <h2>A la découverte des premières notions de React</h2>
         </header>
@@ -87,6 +88,25 @@ function Footer() {
     );
 }
 
+// Composant Menu
+function Menu() {
+    const handleClick = (item) => {
+        alert(`Vous avez cliqué sur: ${item}`);
+    };
+
+    return (
+        <nav style={{ position: 'absolute', top: '10px', left: '10px' }}>
+            <ul style={{ listStyleType: 'none', padding: 0 }}>
+                {['Notes', 'Etudiants', 'Matières', 'A propos'].map((item) => (
+                    <li key={item} style={{ margin: '10px 0' }}>
+                        <button onClick={() => handleClick(item)}>{item}</button>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+}
+
 // Composant App
 function App() {
     const [count, setCount] = useState(0);
@@ -94,6 +114,7 @@ function App() {
     return (
         <>
             <Header />
+            <Menu />
             <MainContent />
             <div>
                 <a href="https://vite.dev" target="_blank">
